@@ -11,7 +11,7 @@ It looks at:
 
 The email starts with one table:
 
-| date_release | link | short_description | role |
+| release_date | link | short_description | role |
 |---|---|---|---|
 | when it was published | title linked to the source | first sentence of the description | Data Engineer, Data Architect, Data Analyst, ML / AI, Platform / Admin |
 
@@ -23,7 +23,7 @@ Release notes have an RSS feed, the rest of the documentation doesn't. To catch 
 - the sitemap is compared with the one from the previous run, which shows **new** and **removed or renamed** pages
 - the *Last updated on* date is read from the pages in the sections listed in `DOCS_SECTIONS`, which shows **edited** pages
 
-The previous sitemap and page details are kept in a JSON file in a Unity Catalog volume. The first run saves that baseline, so new and removed pages are reported starting with the second run. The first run also takes a few minutes, later runs are faster.
+The previous sitemap and page details are kept in a JSON file in a Unity Catalog volume. The first run saves that baseline, so new and removed pages are reported starting with the second run. The docs check reads a few thousand pages, so expect it to take a few minutes.
 
 ## Setup
 
@@ -78,4 +78,5 @@ Everything is in the **Configuration** cell:
 
 - With a daily run and `days_back` = `3`, an item shows up in three emails in a row. Use `1` if you only want what's new since yesterday.
 - No email is sent on days with no updates.
-- Works on Databricks Free Edition. Outbound access there is limited to a set of trusted domains. If a source becomes unreachable it is listed under *Notes* at the bottom of the email, and the other sources still run.
+- Works on Databricks Free Edition. Outbound access there is limited to a set of trusted domains.
+- If a feed can't be read, it is listed under *Notes* at the bottom of the email and the other sources still run. If the docs sitemap can't be reached, the run fails; set `check_docs` to `false` to skip the docs check.
